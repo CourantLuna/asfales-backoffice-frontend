@@ -49,6 +49,7 @@ function isNewPayload(obj: any): obj is { token: string | null; user: AuthUser }
         // Nuevo formato
         setToken(parsed.token);
         setUser(parsed.user);
+        
       } else {
         // Formato legacy: era solo el user
         setToken(null);
@@ -75,8 +76,15 @@ function login(payload: LoginPayload) {
 
   if (isNewPayload(payload)) {
     state = { token: payload.token ?? null, user: payload.user ?? null };
+    // ⬅️ NUEVO: Guardar token en cookie para middleware
+      if (state.token) {
+        document.cookie = `asfales-admin=${state.token}; path=/; secure; sameSite=strict`;
+      }
   } else {
     state = { token: null, user: payload ?? null };
+    // ⬅️ Limpia cookie si no hay token
+      document.cookie = "asfales-admin=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
   }
 
   // Guardar en sessionStorage
@@ -93,8 +101,11 @@ function login(payload: LoginPayload) {
     sessionStorage.removeItem(STORAGE_KEY);
     setUser(null);
     setToken(null);
+    // ⬅️ NUEVO: eliminar cookie
+    document.cookie = "asfales-admin=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
     router.refresh();
-    router.push("?logout=1");
+    router.push("/login");
   }
 
   return { user, token, login, logout, loading };

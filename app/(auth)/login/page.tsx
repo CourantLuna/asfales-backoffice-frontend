@@ -71,7 +71,7 @@ const onSubmit = async (values: any) => {
   try {
     const { token, user } = await loginUser(values.email, values.password);
     saveAuth({ token, user });
-    router.push("/");
+    router.push("/dashboard");
   } catch (error: any) {
     let message = "Ocurrió un error, intenta de nuevo.";
     console.log("Login error:", error);

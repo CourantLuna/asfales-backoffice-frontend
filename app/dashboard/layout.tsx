@@ -2,13 +2,6 @@ import type React from "react";
 // import { Inter } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "next-themes";
-import { AppNavbar } from "@/components/shared/layoutComponets/AppNavbar";
-import Footer from "@/components/shared/Footer";
-import { TopBarTabs } from "@/components/shared/layoutComponets/TopBarTabs";
-import Profile from "@/components/profile/Profile";
-import ProfileSideBar from "@/components/profile/ProfileSideBar";
-import FooterMobile from "@/components/shared/FooterMobile";
-import MobileHeader from "@/components/mobile/MobileHeader";
 import { BackofficeSidebar } from "@/components/shared/layoutComponets/sidebar";
 import { SidebarTrigger, SidebarProvider } from "@/components/ui/sidebar";
 // import { ScrollToTopFAB } from "@/components/shared/ScrollToTopFAB";
@@ -28,7 +21,7 @@ export default function JustAppbarLayout({ children }: { children: React.ReactNo
         {/* <MobileHeader /> */}
 
         <main className="flex-1 flex flex-col w-full">
-        <SidebarTrigger className="mt-3" />
+        <SidebarTrigger className="mt-3 ml-2" />
 
           {children}
 
