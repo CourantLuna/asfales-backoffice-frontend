@@ -43,7 +43,6 @@ function isNewPayload(obj: any): obj is { token: string | null; user: AuthUser }
       }
 
       const parsed = JSON.parse(stored);
-      console.log("useAuth: parsed storage", parsed);
 
       if (isNewPayload(parsed)) {
         // Nuevo formato
