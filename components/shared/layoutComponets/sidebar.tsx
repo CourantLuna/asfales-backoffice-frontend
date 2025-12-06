@@ -32,7 +32,7 @@ const menuConfig: { groups: { label?: string; items: MenuItem[] }[] } = {
     {
       label: "ADMINISTRA",
       items: [
-        { title: "Usuarios", icon: Users, url: "/usuarios" },
+        { title: "Usuarios", icon: Users, url: "/dashboard/usuarios" },
         {
           title: "Proveedores", icon: Building2, items: [
             { title: "Transporte", icon: Plane, url: "/proveedores/transporte" },
@@ -65,7 +65,7 @@ const menuConfig: { groups: { label?: string; items: MenuItem[] }[] } = {
     {
       label: "AUDITA",
       items: [
-        { title: "Logs del Sistema", icon: History, url: "/logs" }
+        { title: "Logs del Sistema", icon: History, url: "/dashboard/logs" }
       ]
     }
   ]
@@ -96,7 +96,7 @@ export function BackofficeSidebar() {
                 {item.items.map(sub => (
                   <SidebarMenuSubItem key={sub.title}>
                     <SidebarMenuSubButton asChild>
-                      <Link href={sub.url!}>
+                      <Link href={`${sub.url}`}>
                         <sub.icon className="size-4" />
                         {sub.title}
                       </Link>
@@ -112,7 +112,7 @@ export function BackofficeSidebar() {
       return (
         <SidebarMenuItem key={item.title}>
           <SidebarMenuButton asChild>
-            <Link href={item.url!}>
+            <Link href={`${item.url}`}>
               <item.icon className="size-4" />
               {item.title}
             </Link>

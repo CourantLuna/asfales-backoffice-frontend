@@ -1,6 +1,7 @@
 import { 
   signInWithEmailAndPassword, 
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  
 } from "firebase/auth";
 
 import { auth } from "../firebase";
@@ -81,5 +82,25 @@ export const resetPassword = async (email: string) => {
     return { success: false, message: error.message };
   }
 };  
+
+
+export const logout = async () => {
+  try {
+    // 1️⃣ Cerrar sesión en Firebase
+    await auth.signOut();
+
+    // 2️⃣ Limpiar sessionStorage
+    sessionStorage.removeItem("asfales-admin");
+
+    // 3️⃣ Limpiar cookie
+    document.cookie = "asfales-admin=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+    // 4️⃣ Redirigir al login
+    window.location.href = "/login";
+  } catch (error: any) {
+    console.error("Error al cerrar sesión:", error);
+    alert("No se pudo cerrar sesión correctamente.");
+  }
+};
 
 

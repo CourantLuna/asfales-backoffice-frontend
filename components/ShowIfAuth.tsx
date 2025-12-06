@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 function ShowIfAuthInner({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const params = useSearchParams();
-  const didLogout = params.get("logout") === "1";
+  const didLogout = params?.get("logout") === "1";
 
   // solo mostramos si hay user _y_ NO acabamos de hacer logout
   if (!user || didLogout) return null;

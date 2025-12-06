@@ -54,7 +54,7 @@ export default function RootLayout({
                   <Toaster  position="bottom-center"  richColors />
 
           <ScrollbarControl /> 
-        <div className="min-h-screen h-screen w-full">
+        <div className="min-h-screen h-screen w-full overflow-hidden">
           {children}
         </div>
           

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthUser } from "@/types/User";
+import { auth } from "../firebase";
 
 /**
  * Lo que guardamos en sessionStorage
@@ -96,15 +97,23 @@ function login(payload: LoginPayload) {
   router.refresh();
 }
 
-  function logout() {
-    sessionStorage.removeItem(STORAGE_KEY);
-    setUser(null);
-    setToken(null);
-    // ⬅️ NUEVO: eliminar cookie
+  async function logout() {
+   try {
+    // 1️⃣ Cerrar sesión en Firebase
+    await auth.signOut();
+
+    // 2️⃣ Limpiar sessionStorage
+    sessionStorage.removeItem("asfales-admin");
+
+    // 3️⃣ Limpiar cookie
     document.cookie = "asfales-admin=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
-    router.refresh();
-    router.push("/login");
+    // 4️⃣ Redirigir al login
+    window.location.href = "/login";
+  } catch (error: any) {
+    console.error("Error al cerrar sesión:", error);
+    alert("No se pudo cerrar sesión correctamente.");
+  }
   }
 
   return { user, token, login, logout, loading };
