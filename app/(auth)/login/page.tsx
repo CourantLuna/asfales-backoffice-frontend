@@ -77,10 +77,10 @@ const onSubmit = async (values: any) => {
 
     if (error.code === "auth/invalid-credential") {
       message = "Credenciales inválidas.";
-    } else if (error.code.includes("auth/too-many-requests") ) {
+    } else if (error.code === "auth/too-many-requests") {
       message = "Demasiados intentos fallidos. Intenta más tarde.";
     }
-    else if (error.code.includes("auth/user-disabled")) {
+    else if (error.code === "auth/user-disabled)") {
       message = "Usuario deshabilitado";
     }
 
