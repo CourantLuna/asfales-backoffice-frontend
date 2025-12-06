@@ -24,11 +24,15 @@ export async function loginUser(
     body: JSON.stringify({ idToken }),
   });
 
+    const data = await res.json();
+
+
+// Si el backend devuelve un error, lanzar con el mensaje que venga
   if (!res.ok) {
-    throw new Error("Error al obtener perfil de usuario");
+    throw new Error(data.message || "Error al obtener perfil de usuario");
   }
 
-  const profile: AuthUser = await res.json();
+  const profile: AuthUser = data;
 
   return { token: idToken, user: profile };
 }

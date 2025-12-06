@@ -11,25 +11,20 @@ export async function POST(req: Request) {
       );
     }
 
-    // Llamada al backend real: /users/me
     const res = await fetch(`${process.env.BACKEND_URL}/users/me`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
+      headers: { Authorization: `Bearer ${idToken}` },
     });
+
+    // Convertir a JSON sin volver a leer el body
     const data = await res.json();
 
-    if (!res.ok) {
-    throw new Error(data.message || "Error al registrarse");
-  }
-
+    // Devolverlo tal cual al frontend
     return NextResponse.json(data, { status: res.status });
-
-  } catch (error) {
+  } catch (error: any) {
     console.error("API /api/auth/login Error:", error);
     return NextResponse.json(
-      { message: "Error interno en login" },
+      { message: error.message || "Error interno en login" },
       { status: 500 }
     );
   }

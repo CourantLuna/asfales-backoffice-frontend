@@ -21,7 +21,7 @@ export default function JustAppbarLayout({ children }: { children: React.ReactNo
         {/* <MobileHeader /> */}
 
         <main className="flex-1 flex flex-col w-full">
-        <SidebarTrigger className="mt-3 ml-2" />
+        <SidebarTrigger className="mt-3 ml-2 shadow-secondary/20 shadow-xl" />
 
           {children}
 

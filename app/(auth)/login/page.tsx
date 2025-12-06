@@ -11,7 +11,6 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "sonner";
 
 import { useAuth } from "@/lib/hooks/useAuth";
 
@@ -73,7 +72,7 @@ const onSubmit = async (values: any) => {
     saveAuth({ token, user });
     router.push("/dashboard");
   } catch (error: any) {
-    let message = "Ocurrió un error, intenta de nuevo.";
+    let message = error.message || error.code || "Ocurrió un error, intenta de nuevo.";
     console.log("Login error:", error);
 
     if (error.code === "auth/invalid-credential") {
