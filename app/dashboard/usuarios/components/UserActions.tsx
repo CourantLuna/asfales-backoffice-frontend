@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 
 type User = {
   uid: string;
@@ -20,16 +21,15 @@ export default function UserActions({ user, onUserDeleted }: Props) {
     if (!confirm(`¿Eliminar usuario ${user.email}?`)) return;
 
     try {
-      const res = await fetch("/api/admin/users", {
+      await fetchWithAuth("/api/admin/users", {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ uid: user.uid }),
       });
-      if (!res.ok) throw new Error("Error al eliminar usuario");
-      onUserDeleted();
-    } catch (err) {
+
+      onUserDeleted(); // refresca la lista
+    } catch (err: any) {
       console.error(err);
-      alert("No se pudo eliminar usuario");
+      alert(err.message || "No se pudo eliminar usuario");
     }
   }
 
@@ -38,23 +38,26 @@ export default function UserActions({ user, onUserDeleted }: Props) {
     if (!newRole) return;
 
     try {
-      const res = await fetch("/api/admin/users/assign-role", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      await fetchWithAuth("/api/admin/users", {
+        method: "PUT",
         body: JSON.stringify({ uid: user.uid, role: newRole }),
       });
-      if (!res.ok) throw new Error("Error al asignar rol");
+
       onUserDeleted(); // refresca la lista
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert("No se pudo asignar el rol");
+      alert(err.message || "No se pudo asignar el rol");
     }
   }
 
   return (
     <div className="flex gap-2">
-      <Button variant="outline" size="sm" onClick={handleAssignRole}>Asignar rol</Button>
-      <Button variant="destructive" size="sm" onClick={handleDelete}>Eliminar</Button>
+      <Button variant="outline" size="sm" onClick={handleAssignRole}>
+        Asignar rol
+      </Button>
+      <Button variant="destructive" size="sm" onClick={handleDelete}>
+        Eliminar
+      </Button>
     </div>
   );
 }

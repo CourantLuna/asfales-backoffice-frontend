@@ -5,7 +5,6 @@ const BACKEND_URL = process.env.BACKEND_URL;
 
 async function getAuthToken(req: Request) {
   const idToken = req.headers.get("Authorization");
-  console.log("Token recibido en proxy:", idToken);
 
   if (!idToken) {
     throw new Error("Token no enviado");
