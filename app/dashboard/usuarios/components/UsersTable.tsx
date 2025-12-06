@@ -58,7 +58,7 @@ export default function UsersTable() {
                 <TableCell>{user.displayName || "-"}</TableCell>
                 <TableCell>{user.role || "user"}</TableCell>
                 <TableCell>
-                  <UserActions user={user} onUserDeleted={fetchUsers} />
+                  <UserActions user={user} handleRefresh={fetchUsers} />
                 </TableCell>
               </TableRow>
             ))}

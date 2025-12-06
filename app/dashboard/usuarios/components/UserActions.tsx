@@ -1,23 +1,39 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
-
-type User = {
-  uid: string;
-  email: string;
-  displayName?: string;
-  role?: string;
-};
+import { User } from "@/models/user.model";
 
 type Props = {
   user: User;
-  onUserDeleted: () => void;
+  handleRefresh: () => void;
 };
 
-export default function UserActions({ user, onUserDeleted }: Props) {
-  async function handleDelete() {
+export default function UserActions({ user, handleRefresh }: Props) {
+
+const [loading, setLoading] = useState(false);
+
+  async function handleToggleStatus() {
+    setLoading(true);
+    try {
+      const res = await fetchWithAuth("/api/admin/users/toggle-status", {
+  method: "POST",
+  body: JSON.stringify({ uid: user.uid, disabled: !user.disabled }),
+});
+
+
+      console.log(res.message);
+      handleRefresh(); // refresca lista
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || "Error al actualizar estado de usuario");
+    } finally {
+      setLoading(false);
+    }
+  }
+  
+    async function handleDelete() {
     if (!confirm(`¿Eliminar usuario ${user.email}?`)) return;
 
     try {
@@ -26,7 +42,7 @@ export default function UserActions({ user, onUserDeleted }: Props) {
         body: JSON.stringify({ uid: user.uid }),
       });
 
-      onUserDeleted(); // refresca la lista
+      handleRefresh(); // refresca la lista
     } catch (err: any) {
       console.error(err);
       alert(err.message || "No se pudo eliminar usuario");
@@ -43,7 +59,7 @@ export default function UserActions({ user, onUserDeleted }: Props) {
         body: JSON.stringify({ uid: user.uid, role: newRole }),
       });
 
-      onUserDeleted(); // refresca la lista
+      handleRefresh(); // refresca la lista
     } catch (err: any) {
       console.error(err);
       alert(err.message || "No se pudo asignar el rol");
@@ -54,6 +70,9 @@ export default function UserActions({ user, onUserDeleted }: Props) {
     <div className="flex gap-2">
       <Button variant="outline" size="sm" onClick={handleAssignRole}>
         Asignar rol
+      </Button>
+      <Button variant={user.disabled ? "outline" : "default"} size="sm" className="min-w-32" onClick={handleToggleStatus} disabled={loading}>
+        {user.disabled ? "Habilitar" : "Deshabilitar"}
       </Button>
       <Button variant="destructive" size="sm" onClick={handleDelete}>
         Eliminar
