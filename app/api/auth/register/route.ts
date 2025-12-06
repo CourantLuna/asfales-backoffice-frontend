@@ -12,7 +12,8 @@ export async function POST(req: Request) {
 
     let data: any = {};
     try {
-      data = await res.json();
+      const text = await res.json();
+      data = text ? JSON.parse(text) : {};
     } catch {
       data = { message: 'Error inesperado del backend' };
     }

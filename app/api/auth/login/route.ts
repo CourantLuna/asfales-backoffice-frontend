@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  let data: any = {};
+
   try {
     const { idToken } = await req.json();
 
@@ -17,7 +19,8 @@ export async function POST(req: Request) {
     });
 
     // Convertir a JSON sin volver a leer el body
-    const data = await res.json();
+    const text = await res.text();           // leer como texto
+    data = text ? JSON.parse(text) : {};     // parsear solo si hay contenido
 
     // Devolverlo tal cual al frontend
     return NextResponse.json(data, { status: res.status });
@@ -27,5 +30,6 @@ export async function POST(req: Request) {
       { message: error.message || "Error interno en login" },
       { status: 500 }
     );
+    
   }
 }
