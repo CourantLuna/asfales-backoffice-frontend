@@ -6,5 +6,6 @@ export interface AuthUser {
   createdAt: string;
   avatar?: string; // URL del avatar, opcional
   phoneNumber?: any;
+  disabled?: boolean;
 }
   

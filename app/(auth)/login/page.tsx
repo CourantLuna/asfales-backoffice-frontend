@@ -72,15 +72,15 @@ const onSubmit = async (values: any) => {
     saveAuth({ token, user });
     router.push("/dashboard");
   } catch (error: any) {
-    let message = error.message || error.code || "Ocurrió un error, intenta de nuevo.";
-    console.log("Login error:", error);
+    let message = error.code || "Ocurrió un error, intenta de nuevo.";
+    console.error("Login error:", JSON.stringify(error));
 
     if (error.code === "auth/invalid-credential") {
       message = "Credenciales inválidas.";
     } else if (error.code === "auth/too-many-requests") {
       message = "Demasiados intentos fallidos. Intenta más tarde.";
     }
-    else if (error.code === "auth/user-disabled)") {
+    else if (error.code === "auth/user-disabled") {
       message = "Usuario deshabilitado";
     }
 

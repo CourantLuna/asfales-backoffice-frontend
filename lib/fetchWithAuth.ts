@@ -21,15 +21,20 @@ export async function fetchWithAuth(input: RequestInfo, init?: RequestInit) {
     data = text ? JSON.parse(text) : {};
   } catch (err) {
     console.warn("No JSON recibido, body vacío?");
+    console.log("el error de fetchWithAuth es: ",err)
     data = {};
   }
 
   if (!res.ok && data.errorInfo?.code === "auth/id-token-expired") {
     // llamar logout si quieres
+        console.log("el resp es ",res, "y el data error es:", data);
+        logout?.();
+
     throw new Error("Sesión expirada");
   }
 
   if (!res.ok) throw new Error(data.message || "Error en la petición");
+        console.log("el resp es ",res, "y el data error es:", data);
 
   return data;
 }
